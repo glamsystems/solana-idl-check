@@ -1,0 +1,41 @@
+name: IDL Health Check
+
+on:
+  schedule:
+    # Run daily at midnight UTC
+    - cron: '0 0 * * *'
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+
+jobs:
+  check-idl:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: './idl-monitor/package-lock.json'
+
+    - name: Install dependencies
+      working-directory: ./idl-monitor
+      run: npm ci
+
+    - name: Run IDL Health Check
+      working-directory: ./idl-monitor
+      env:
+        SOLANA_CLUSTER: 'mainnet-beta'
+        HELIUS_API_KEY: ${{ secrets.HELIUS_API_KEY }}
+        # Replace these with your actual Program ID and IDL Account
+        # Or pass them as secrets/vars if you monitor multiple programs
+        PROGRAM_ID: ${{ vars.PROGRAM_ID || 'YourProgramIdHere' }}
+        IDL_ACCOUNT: ${{ vars.IDL_ACCOUNT || 'YourIdlAccountHere' }}
+      run: npm run check
