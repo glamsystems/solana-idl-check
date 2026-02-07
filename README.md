@@ -7,21 +7,31 @@ If the program binary was upgraded **after** the IDL was last updated, the check
 ## Usage as a GitHub Action
 
 ```yaml
-name: IDL Health Check
+name: IDL Check
 
 on:
   schedule:
-    - cron: "0 0 * * *" # daily
+    - cron: "0 0 * * *" # daily at 00:00 UTC
   workflow_dispatch:
 
 jobs:
   check-idl:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        program:
+          - name: program_name_1
+            id: YourProgramId111111111111111111111111111111
+          - name: program_name_2
+            id: YourProgramId111111111111111111111111111112
+    name: check-idl (${{ matrix.program.name }})
     steps:
-      - uses: your-org/solana-idl-check@v1
+      - uses: glamsystems/solana-idl-check@v1.0.1
+        env:
+          RPC_URL: "https://mainnet.helius-rpc.com/?api-key=${{ secrets.HELIUS_API_KEY }}"
         with:
-          rpc-url: ${{ secrets.RPC_URL }}
-          program-id: "YourProgramId111111111111111111111111111111"
+          rpc-url: ${{ env.RPC_URL }}
+          program-id: ${{ matrix.program.id }}
 ```
 
 ### Inputs
@@ -46,22 +56,17 @@ Exits with code **0** if the IDL is up to date.
 ## Usage as a CLI tool
 
 ```bash
-git clone https://github.com/your-org/solana-idl-check.git
+git clone https://github.com/glamsystems/solana-idl-check.git
 cd solana-idl-check
 npm install
-```
-
-Create a `.env` file:
-
-```
-RPC_URL=https://your-rpc-endpoint.com
-PROGRAM_ID=YourProgramId111111111111111111111111111111
 ```
 
 Run:
 
 ```bash
-npm run check
+RPC_URL=https://your-rpc-endpoint.com \
+  PROGRAM_ID=YourProgramId111111111111111111111111111111 \
+  npm run check
 ```
 
 ## Publishing a new version
