@@ -1,5 +1,5 @@
 {
-  "name": "solana-idl-monitor",
+  "name": "solana-idl-check",
   "version": "1.0.0",
   "description": "Health check script to detect outdated Solana IDLs",
   "main": "dist/check-idl.js",

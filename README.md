@@ -18,7 +18,7 @@ jobs:
   check-idl:
     runs-on: ubuntu-latest
     steps:
-      - uses: your-org/solana-idl-monitor@v1
+      - uses: your-org/solana-idl-check@v1
         with:
           rpc-url: ${{ secrets.RPC_URL }}
           program-id: "YourProgramId111111111111111111111111111111"
@@ -46,8 +46,8 @@ Exits with code **0** if the IDL is up to date.
 ## Usage as a CLI tool
 
 ```bash
-git clone https://github.com/your-org/solana-idl-monitor.git
-cd solana-idl-monitor
+git clone https://github.com/your-org/solana-idl-check.git
+cd solana-idl-check
 npm install
 ```
 
