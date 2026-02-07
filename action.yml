@@ -1,0 +1,19 @@
+name: "Solana IDL Health Check"
+description: "Detect outdated on-chain Solana IDLs by comparing program upgrade slots to IDL upgrade slots"
+author: ""
+
+branding:
+  icon: "shield"
+  color: "purple"
+
+inputs:
+  rpc-url:
+    description: "Solana RPC endpoint URL. Pass as a secret (${{ secrets.RPC_URL }}) since it may contain an API key."
+    required: true
+  program-id:
+    description: "The on-chain program address to monitor"
+    required: true
+
+runs:
+  using: "node20"
+  main: "dist/action/index.js"

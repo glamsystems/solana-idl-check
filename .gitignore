@@ -1,4 +1,5 @@
 node_modules
 dist
+!dist/action/
 .env
 .DS_Store
